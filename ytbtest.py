@@ -1,4 +1,5 @@
 #importing libraries
+import logging
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -6,6 +7,9 @@ from streamlit_option_menu import option_menu
 import mysql.connector as sql
 import pymongo
 from googleapiclient.discovery import build
+
+# Set up logging for debugging
+logging.basicConfig(level=logging.DEBUG)
 
 # SETTING PAGE CONFIGURATIONS
 
@@ -37,7 +41,7 @@ mydb = sql.connect(host="localhost",
                    password="12345",
                    database= "ytbdata"
                   )
-mycursor = mydb.cursor(buffered=True)
+mycursor = mydb.cursor()
 
 # BUILDING CONNECTION WITH YOUTUBE API
 api_key = "AIzaSyBxIlc2FqK0S0sbyEVbGWyOuNiPU8LMEK8"
@@ -215,28 +219,22 @@ if selected == "Extract and Transform":
         
         def insert_into_channels():
                 collections = db.channel_details
-                query = """INSERT INTO channels VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"""
+                query = "INSERT INTO channels VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
                 
                 for i in collections.find({"Channel_name" : user_inp},{'_id':0}):
-                    mycursor.execute(query,tuple(i.values()))
-                    mydb.commit()
+                  print(i)
+                  mycursor.execute(query,tuple(i.values()))
+                  mydb.commit()
                 
         def insert_into_videos():
             collectionss = db.video_details
-            query1 = """INSERT INTO videos VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-            try:
-                for i in collectionss.find({"Channel_name": user_inp}, {"_id": 0}):
-                    t = tuple(i.values())
-                    mycursor.execute(query1, t)
-                mydb.commit()
-                print("Data successfully inserted into 'videos' table.")
-            except Exception as e:
-                print("Error while inserting data into 'videos' table:", str(e))
-                mydb.rollback()
-
-
-
-            
+            print(collectionss)
+            query1 = "INSERT INTO videos VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            for i in collectionss.find({"Channel_name" : user_inp},{"_id":0}):
+              print(i)
+              mycursor.execute(query1,tuple(i.values()))
+              mydb.commit()
+           
         def insert_into_comments():
             collections1 = db.video_details
             collections2 = db.comments_details
@@ -244,9 +242,10 @@ if selected == "Extract and Transform":
 
             for vid in collections1.find({"Channel_name" : user_inp},{'_id' : 0}):
                 for i in collections2.find({'Video_id': vid['Video_id']},{'_id' : 0}):
-                    t=tuple(i.values())
-                    mycursor.execute(query2,t)
-                    mydb.commit()
+                  print(i)
+                  t=tuple(i.values())
+                  mycursor.execute(query2,t)
+                  mydb.commit()
 
         if st.button("Submit"):
             try:
