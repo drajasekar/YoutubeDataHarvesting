@@ -323,7 +323,7 @@ if selected == "Extract and Transform":
             
 # VIEW PAGE
 if selected == "View":
-    st.write("## :orange[Select any question to get Insights]")
+    st.write("## :red[Select any question to get Insights]")
     questions = st.selectbox('Questions',
     ['Click the question that you would like to query',
     '1. What are the names of all the videos and their corresponding channels?',
