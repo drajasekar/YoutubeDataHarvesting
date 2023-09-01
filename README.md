@@ -22,3 +22,5 @@ Store the retrieved data in a MongoDB data lake, as MongoDB is a suitable choice
 Transferring the collected data from multiple channels namely the channels,videos and comments to a SQL data warehouse, utilizing a SQL database like MySQL or PostgreSQL for this purpose.
 Utilize SQL queries to join tables within the SQL data warehouse and retrieve specific channel data based on user input. For that the SQL table previously made has to be properly given the the foreign and the primary key.
 The retrieved data is displayed within the Streamlit application, leveraging Streamlit's data visualization capabilities to create charts and graphs for users to analyze the data
+
+Demo video: https://www.linkedin.com/posts/rajasekar-dhanasekar-29a62b123_careerchange-project-dataanalysis-activity-7103366240097759232-2XWD?utm_source=share&utm_medium=member_desktop
